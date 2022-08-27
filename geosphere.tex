@@ -8,11 +8,11 @@
 \newcommand\lat[1]{{#1}_{\rm lat}}
 \renewcommand\long[1]{{#1}_{\rm long}}
 \begin{document}
-\centerline{\Large\bf The Geosphere}
+\centerline{\Large\bf Computations on the Geosphere}
 \section{Introduction}
 
-This note describes two elementary computations in spherical geometry which have
-practical value for navigation on the surface of the earth.
+This note derives the formulas for two computations in spherical geometry which
+have practical value for navigation on the surface of the earth.
 
 To describe the computations we need a few conventions. We will consider the
 unit sphere $\Sigma$ in ${\mathbb R}^3$ centered at the origin. A {\it great
@@ -31,9 +31,9 @@ the clockwise direction as viewed from outside $\Sigma$.
 The {\it north pole} of $\Sigma$ is the point $(0, 0, 1)$ and the {\it south
   pole} is the point $(0, 0, -1)$. A {\it meridian} is a geodesic path from the
 south pole to the north pole. There is a unique meridian passing through any
-non-polar point $S$ of $\Sigma$, denoted $\mathcal{M}_s$. The {\it bearing} of a
+non-polar point $S$ of $\Sigma$, denoted $\mathcal{M}_S$. The {\it bearing} of a
 geodesic path $\gamma$ which starts at a non-polar point $S$ is the angle from
-$\mathcal{M}_s$ to $\gamma$. The {\it prime meridian} $\mathcal P$ is the
+$\mathcal{M}_S$ to $\gamma$. The {\it prime meridian} $\mathcal P$ is the
 meridian through the point $(1, 0, 0)$.
 
 The (unit) position vector of a point $P$ on $\Sigma$ will be denoted
@@ -47,29 +47,32 @@ $\theta\in [-\pi, 0]$.
 
 The two computations are:
 \begin{enumerate}[label={(\arabic*)}]
+\item Given coordinates of a non-polar point $S$ and of a different point $E$
+  which is not the antipode of $S$, find the bearing and length of the (shorter)
+  geodesic path from $S$ to $E$.  This answers the most basic navigation
+  question: ``If I am located at $S$ and I want to go to $E$, in which direction
+  should I head?''
 \item Given coordinates of a non-polar point $S$ on $\Sigma$, an angle
   $\beta$, and a distance $\delta$, find the coordinates of the ending point of the
   geodesic path starting at $S$ with bearing $\beta$ and length $\delta$.
-\item Given coordinates of a non-polar point $S$ and of a different point
-  $E$ which is not the antipode of $S$, find the bearing and length of
-  the (shorter) geodesic path from $S$ to $E$.
 \end{enumerate}
-If $S$ is a pole then computation (2) is trivial since the bearing is $0$
-if $S$ is the south pole or $\pi$ if $S$ is the north pole and the
-distance is $\pi - |\lat S|$.
+
+If $S$ is a pole then computation (1) is trivial since the bearing is $0$ if $S$
+is the south pole or $\pi$ if $S$ is the north pole, and the distance in either
+case is $\pi - |\lat S|$.
 
 \section{Coordinates}
-The {\it latitude} $\lat s$ of a point $s\in\Sigma$ is the signed distance from $S$ to
-the point where $\mathcal{M}_s$ meets the equator, the sign being the same
+The {\it latitude} $\lat S$ of a point $S\in\Sigma$ is the signed distance from $S$ to
+the point where $\mathcal{M}_S$ meets the equator, the sign being the same
 as the sign of the $z$-coordinate of $S$. So latitudes take values in the
 interval $[-\pi, \pi]$.
 
-The {\it longitude} $\long s$ of a point$s\in\Sigma$ is the angle between
-$\mathcal{P}$ and $\mathcal{M}_s$.  Longitude is positive for points to the
+The {\it longitude} $\long S$ of a point $S\in\Sigma$ is the angle between
+$\mathcal{P}$ and $\mathcal{M}_S$.  Longitude is positive for points to the
 east of the prime meridian and negative for points to the west, and longitudes
 take values in the interval $(-\pi, \pi]$.
 
-The {\it coordinates} of $S$ refers to the pair $(\lat s, \long s)$.  
+The {\it coordinates} of $S$ refers to the pair $(\lat S, \long S)$.  
 
 \section{Symmetry}
 
@@ -77,22 +80,19 @@ Latitude, bearing and distance are all preserved by rotation about the $z$-axis,
 so we may assume for both of these problems that the point $S$ lies on the prime
 meridian.
 
-For computation (1) we will replace $S$ by the point $S'$ with coordinates
-$(\lat s, 0)$. If the computation for $S'$ produces a point with longitude
-$\lambda$ then the result for the initial problem would be a point with
-longitude $-\pi + (\pi + v + \lambda \mod 2\pi)$. The latitude of the result
-will be the same for $S$ and $S'$, so no adjustment is needed for the latitude.
-
-For computation (2) we will replace the point $S$ by the point with coordinates
+For computation (1) we will replace the point $S$ by the point with coordinates
 $(\lat S, 0)$ and the point $E$ by the point with coordinates
 $(\lat E, -\pi + (\pi + \long E - \long S \mod 2\pi)$.  No adjustment is
 needed for the result.
 
-\section{Bearing and Distance to Coordinates}
-Here we consider computation (1).  We are given a starting point $S$ with coordinates
-$(\lat s, 0)$ a bearing $\beta$, and a distance $\delta$.  We need to compute
-the coordinates $(\lat E, \long E)$ of the ending point $E$ of the geodesic path
-$\gamma$ with bearing $\beta$ and length $\delta$.
+ For computation (2) we will replace $S$ by the point $S'$ with coordinates
+$(\lat S, 0)$. If the computation for $S'$ produces a point with longitude
+$\lambda$ then the result for the initial problem would be a point with
+longitude $-\pi + (\pi + v + \lambda \mod 2\pi)$. The latitude of the result
+will be the same for $S$ and $S'$, so no adjustment is needed for the latitude.
+
+\section{The Key equations}
+There are two equations which contain all of the information that we need.
 
 First we have
 \[
@@ -105,14 +105,14 @@ and
 Thus
 \[
   \cos \delta = \vec{S}\cdot\vec{E} = \cos\lat S \cos\long E\cos\lat E + \sin\lat S \sin\lat E .
-  \eqno{\ast}
+  \leqno{(\ast)}
 \]
 
-Second, observe the angle between the prime meridian and the path $\gamma$ equals
-the angle between the normal vectors to the planes cutting out their great
-circles.  These normal vectors are $\vec N = (0, -1, 0)$ for the meridian and
-$\frac{1}{\sin\delta}\vec{S}\times\vec{E}$ for $\gamma$.  The dot product
-$\vec{S}\times\vec{E}\cdot\vec{N}$ is given by
+Second, we observe that the angle between the prime meridian and the path
+$\gamma$ equals the angle between the normal vectors to the planes cutting out
+their great circles.  These normal vectors are $\vec N = (0, -1, 0)$ for the
+meridian and $\frac{1}{\sin\delta}\vec{S}\times\vec{E}$ for $\gamma$.  The dot
+product $\vec{S}\times\vec{E}\cdot\vec{N}$ is given by
 \[
   \det\left[
     \begin{matrix}
@@ -120,7 +120,7 @@ $\vec{S}\times\vec{E}\cdot\vec{N}$ is given by
       \cos\long E\cos\lat E& \sin\long E\cos\lat E & \sin\lat E\\
       0 & -1 & 0\\
     \end{matrix}
-    \right]\leqno{(\ast)}
+    \right]
 \]
 so we have
  \[
@@ -128,10 +128,31 @@ so we have
  \leqno{(\dagger)}
 \]
 
-Taking $(\ast)$ and $(\dagger)$ together gives a $2\times2$ linear system that
-determines $\sin\lat E$ and $\cos\long E\cos\lat E$ in terms of  $S$, $\beta$
-and $\delta$:
-\[
+\section{Coordinates to Bearing and Distance}
+For computation (1) we first use $(\ast)$ to solve for $\delta$:
+$$
+  \delta = \arccos(\cos\lat S \cos\long E\cos\lat E + \sin\lat S \sin\lat E)
+$$
+
+We may then solve for $\beta$ using $(\dagger)$:
+$$
+  \beta = \arccos\left(
+       \frac{\cos\lat S\sin\lat E - \sin\lat S\cos\long E\cos\lat E}{\sin\delta}
+  \right)
+$$
+
+We know that $\sin\delta$ is non-zero because we have assumed that $S$
+and $E$ are different points.
+
+\section{Bearing and Distance to Coordinates}
+For computation (2) we are given a starting point $S$ with coordinates
+$(\lat S, 0)$ a bearing $\beta$, and a distance $\delta$.  We need to compute
+the coordinates $(\lat E, \long E)$ of the ending point $E$ of the geodesic path
+$\gamma$ with bearing $\beta$ and length $\delta$.
+
+We first rewrite $(\ast)$ and $(\dagger)$ as a matrix equation that expresses
+$\beta$ and $\delta$ in terms of the coordinates of $S$ and $E$.
+$$
   \left[
   \begin{matrix}
    \cos\lat S  & \sin\lat S \\
@@ -150,34 +171,58 @@ and $\delta$:
     \sin\delta\cos\beta \\
     \end{matrix}
   \right]
-\]
+$$
+Then multiply both sides of the matrix equation by the inverse of the rotation
+matrix on the left to express the coordinates of $E$ in terms of $\beta$,
+$\delta$ and the coordinates of $S$:
+$$
+  \left[
+  \begin{matrix}
+   \cos\lat S  & -\sin\lat S \\
+   \sin\lat S & \cos\lat S
+  \end{matrix}
+  \right]
+  \left[
+   \begin{matrix}
+    \cos\delta\\
+    \sin\delta\cos\beta
+   \end{matrix}
+  \right]
+  = \left[
+    \begin{matrix}
+    \cos\long E\cos\lat E \\
+    \sin\lat E \\
+    \end{matrix}
+  \right]
+$$
 
-Solving the system, by multiplying by the rotation matrix with angle $-\lat S$,
-gives
+This gives
 \begin{align*}
   \cos\long E\cos\lat E &= \cos\lat S\cos\delta -
                           \sin\lat S\sin\delta\cos\beta\\
   \sin\lat E &= \sin\lat S\cos\delta + \cos\lat S\sin\delta\cos\beta
 \end{align*}
 
-We may then solve for $\lat E$ and $\long E$ in two steps.
+We may then solve for $\lat E$ and $\long E$ in two steps:
 \begin{align*}
   \lat E &= \arcsin(\sin\lat S\cos\delta + \cos\lat S\sin\delta\cos\beta)\\
-  \long E &= \pm\arccos((\cos\lat S\cos\delta -
-            \sin\lat S\sin\delta\cos\beta) / \cos\lat E)
+  \long E &=\pm\arccos
+            \left(
+            \frac{\cos\lat S\cos\delta-\sin\lat S\sin\delta\cos\beta}{\cos\lat E}
+            \right)
 \end{align*}
+Note that $\long E$ is undefined if $E$ is a pole, and that $\cos\lat E$ is
+non-zero as long as $E$ is not a pole.  Thus we should check whether $E$
+is a pole before attempting to compute its longitude.
 
-The ambiguity in the sign of $\long E$ arises because the longitude of
-$E$ may have any value in $(-\pi, \pi)$ but
-$\arccos(\cos\theta) = -\theta$ for $\theta\in(-\pi,0)$.  The
-longitude changes monotonically along any great circle which does not
-pass through a pole, and is constant along great circles which do pass
-through a pole.  So we know that the sign must be positive if the
-bearing lies in $(0, \pi)$ and negative if the bearing lies in
-$(\pi, 2\pi)$.  The sign is irrelevant if the bearing is $0$ or $\pi$,
-since the longitude will be $0$ at each point of the great circle.
-
-\section{Coordinates to Bearing and Distance}
-Now we consider computation (2).
+The ambiguity in the sign of $\long E$ arises because the longitude of a
+non-polar $E$ may have any value in $(-\pi, \pi)$, but
+$\arccos(\cos\theta) = -\theta$ for $\theta\in(-\pi,0)$.  The longitude changes
+monotonically along any great circle which does not pass through a pole, and is
+constant along great circles which do pass through a pole.  So we can resolve
+the sign ambiguity because we know that the sign must be positive if the bearing
+lies in $(0, \pi)$ and negative if the bearing lies in $(\pi, 2\pi)$.  The sign
+is irrelevant if the bearing is $0$ or $\pi$, since the longitude will be $0$ at
+each point of the great circle.
 
 \end{document}.

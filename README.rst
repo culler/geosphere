@@ -1,9 +1,13 @@
 Geosphere
 =========
 
-This small pure python package provides two functions which do
+This small pure Python 3 package provides two functions which do
 computations in spherical trigonometry that are needed for
 navigating on the surface of the earth.
+
+The package can be installed with pip by running
+
+``pip install geosphere``
 
 The function
 
@@ -26,4 +30,6 @@ pole, the bearing is 0 or 180, as appropriate.  If the points are
 antipodes, so the bearing is undefined, then the bearing returned
 is 0.
 
+The formulas used in the package are derived in the LaTeX file
+``doc/geosphere.tex``.
 

@@ -1,6 +1,4 @@
 from math import sin, cos, asin, acos, pi
-import json
-import requests
 
 """
 Longitude increases to the east, decreases to the west and lies in (-180, 180].
@@ -11,17 +9,6 @@ One foot subtends an angle of 2.7429e-06 radians
 Bearing and longitude are meaningless at the poles. 
 There is no meaningful bearing from a point to its antipode.
 """
-
-def get_declination(lat, long):
-    """
-    Use NOAA's API to get the magnetic declination at a location.
-    """
-    url = 'https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination'
-    query = '?lat1=%s&lon1=%s&key=zNEw7&resultFormat=json'
-    result = requests.get(url + query%(lat, long))
-    data = json.loads(result.content)
-    declination = float(data['result'][0]['declination'])
-    return declination
 
 def safe(x):
     if x > 1.0:
@@ -62,7 +49,7 @@ def distance_bearing(lat1Deg, long1Deg, lat2Deg, long2Deg):
             bearing = 2*pi - bearing
     return 60.0*dist/rad, bearing/rad % 360
 
-def great_circle(lat_degrees, long_degrees, distance_nm, bearing_degrees):
+def destination(lat_degrees, long_degrees, distance_nm, bearing_degrees):
     """
     Return the latitude and longitude of the location reached by traveling
     distance_nm nautical miles along the great circle which passes through the
@@ -82,24 +69,9 @@ def great_circle(lat_degrees, long_degrees, distance_nm, bearing_degrees):
     if bearing > pi:
         long = -long
     return lat / rad, reduce(long_degrees + long / rad)
-
-def course(lat_deg, long_deg, distance_nm, bearing_deg, length_ft):
-    """
-    Return the latitude and longitude of the pin and weather mark if the
-    wind is at bearing_deg with given distance to the weather mark and
-    line length.
-    """
-    pin_bearing = (bearing_deg - 90) % 360
-    pin_nm = length_ft / 6076.12
-    pin_lat, pin_long = great_circle(lat_deg, long_deg, pin_nm, pin_bearing)
-    mark_lat, mark_long = great_circle(lat_deg, long_deg, distance_nm, bearing_deg)
-    return {
-        'pin' : {'latitude': pin_lat, 'longitude': pin_long},
-        'mark': {'latitude': mark_lat, 'longitude': mark_long},
-        }
     
 def test(lat_deg, long_deg, distance_nm, bearing_deg):
-    lat2, long2 = great_circle(lat_deg, long_deg, distance_nm, bearing_deg)
+    lat2, long2 = destination(lat_deg, long_deg, distance_nm, bearing_deg)
     distance, bearing = distance_bearing(lat_deg, long_deg, lat2, long2)
     print(distance_nm, distance)
     print(bearing_deg, bearing)

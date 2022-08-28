@@ -1,4 +1,4 @@
-from math import *
+from math import sin, cos, asin, acos, pi
 import json
 import requests
 
@@ -23,7 +23,7 @@ def get_declination(lat, long):
     declination = float(data['result'][0]['declination'])
     return declination
 
-def bracket(x):
+def safe(x):
     if x > 1.0:
         return 1.0
     if x < -1.0:
@@ -56,7 +56,7 @@ def distance_bearing(lat1Deg, long1Deg, lat2Deg, long2Deg):
     else:
         cos_bearing = (
             (cos(lat1)*sin(lat2) - cos(long_diff)*sin(lat1)*cos(lat2)) / sin(dist))
-        bearing = acos(bracket(cos_bearing))
+        bearing = acos(safe(cos_bearing))
         # Reverse the bearing if needed.
         if sin(long_diff)*cos(lat1)*cos(lat2) < 0:
             bearing = 2*pi - bearing
@@ -75,10 +75,10 @@ def great_circle(lat_degrees, long_degrees, distance_nm, bearing_degrees):
     assert 0 < distance < pi
     sin_lat = (cos(start_lat) * cos(bearing) * sin(distance) +
                sin(start_lat) * cos(distance))
-    lat = asin(bracket(sin_lat))
+    lat = asin(safe(sin_lat))
     cos_long = (-sin(start_lat)*cos(bearing)*sin(distance) +
                 cos(start_lat)*cos(distance)) / cos(lat)
-    long = acos(bracket(cos_long))
+    long = acos(safe(cos_long))
     if bearing > pi:
         long = -long
     return lat / rad, reduce(long_degrees + long / rad)

@@ -20,7 +20,7 @@ def safe(x):
 def reduce(x):
     return (x + 180) % 360 - 180
 
-def distance_bearing(lat1Deg, long1Deg, lat2Deg, long2Deg):
+def distance_bearing(lat1_deg, long1_deg, lat2_deg, long2_deg):
     """
     Return the distance in nautical miles and the bearing in degrees from the
     location given by the first lat-long pair to the location given by the
@@ -30,13 +30,13 @@ def distance_bearing(lat1Deg, long1Deg, lat2Deg, long2Deg):
     is not defined and is returned as 0.
     """
     rad = pi/180
-    long_diff = reduce(long2Deg*rad - long1Deg*rad)
-    lat1, lat2 = lat1Deg*rad, lat2Deg*rad
+    long_diff = reduce(long2_deg*rad - long1_deg*rad)
+    lat1, lat2 = lat1_deg*rad, lat2_deg*rad
     cos_dist = (cos(lat1) * cos(lat2) * cos(long_diff) + sin(lat1) * sin(lat2))
     dist = acos(cos_dist)
-    if lat1Deg > 89.9: # North pole
+    if lat1_deg > 89.9: # North pole
         bearing = pi 
-    elif lat1Deg < -89.9: # South pole
+    elif lat1_deg < -89.9: # South pole
         bearing = 0
     elif dist < 1.0e-7 or dist > pi - 1.0e-7: # Same or antipodes
         bearing = 0

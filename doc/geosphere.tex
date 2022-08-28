@@ -57,9 +57,11 @@ The two computations are:
   geodesic path starting at $S$ with bearing $\beta$ and length $\delta$.
 \end{enumerate}
 
-If $S$ is a pole then computation (1) is trivial since the bearing is $0$ if $S$
-is the south pole or $\pi$ if $S$ is the north pole, and the distance in either
-case is $\pi - |\lat S|$.
+If $S$ is a pole then the question answered by computation (1) is trivial: the
+bearing is $0$ if $S$ is the south pole or $\pi$ if $S$ is the north pole, and
+the distance in either case is $\pi - |\lat S|$.  However, the formula which we
+derive here is invalid if $S$ is a pole, so the question must be answered with
+logic, not computation.
 
 \section{Coordinates}
 The {\it latitude} $\lat S$ of a point $S\in\Sigma$ is the signed distance from $S$ to
@@ -148,7 +150,8 @@ and $E$ are different points.
 For computation (2) we are given a starting point $S$ with coordinates
 $(\lat S, 0)$ a bearing $\beta$, and a distance $\delta$.  We need to compute
 the coordinates $(\lat E, \long E)$ of the ending point $E$ of the geodesic path
-$\gamma$ with bearing $\beta$ and length $\delta$.
+$\gamma$ with bearing $\beta$ and length $\delta$.  (Note that longitude
+is undefined if $E$ is a pole.)
 
 We first rewrite $(\ast)$ and $(\dagger)$ as a matrix equation that expresses
 $\beta$ and $\delta$ in terms of the coordinates of $S$ and $E$.
@@ -211,18 +214,21 @@ We may then solve for $\lat E$ and $\long E$ in two steps:
             \frac{\cos\lat S\cos\delta-\sin\lat S\sin\delta\cos\beta}{\cos\lat E}
             \right)
 \end{align*}
-Note that $\long E$ is undefined if $E$ is a pole, and that $\cos\lat E$ is
-non-zero as long as $E$ is not a pole.  Thus we should check whether $E$
-is a pole before attempting to compute its longitude.
+Note that $\cos\lat E$ is non-zero if $E$ is not a pole, and that
+longitude is undefined if $E$ is a pole.  So the case where $E$ is a pole
+must be handled differently.  This is easily detected by comparing the
+distance to $\lat S$ in the cases where the bearing is $0$ or $\pi$.
 
 The ambiguity in the sign of $\long E$ arises because the longitude of a
 non-polar $E$ may have any value in $(-\pi, \pi)$, but
 $\arccos(\cos\theta) = -\theta$ for $\theta\in(-\pi,0)$.  The longitude changes
-monotonically along any great circle which does not pass through a pole, and is
-constant along great circles which do pass through a pole.  So we can resolve
-the sign ambiguity because we know that the sign must be positive if the bearing
-lies in $(0, \pi)$ and negative if the bearing lies in $(\pi, 2\pi)$.  The sign
-is irrelevant if the bearing is $0$ or $\pi$, since the longitude will be $0$ at
-each point of the great circle.
+monotonically along any great circle which does not pass through a pole.  (It is
+a basic geometric fact that distinct geodesics can never be tangent, so any
+great circle which does not contain a meridian is transverse to every meridian.)
+This allows us to resolve the sign ambiguity: the sign is positive if the
+bearing lies in $(0, \pi)$ and negative if the bearing lies in $(\pi, 2\pi)$.
+The sign is irrelevant if the bearing is $0$ or $\pi$. The longitude of the
+non-polar point $E$ is either $0$ or $\pi$, depending on whether the geodesic
+path $\gamma$ passes through a pole.
 
 \end{document}.
